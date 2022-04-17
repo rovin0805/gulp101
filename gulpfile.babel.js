@@ -3,8 +3,10 @@ import gpug from 'gulp-pug';
 import del from 'del';
 import ws from 'gulp-webserver';
 import gimage from 'gulp-image';
+import autoPrefixer from 'gulp-autoprefixer';
+import miniCSS from 'gulp-csso';
 
-const sass = require('gulp-sass')(require('node-sass'));
+const sass = require('gulp-sass')(require('sass'));
 
 const routes = {
   pug: {
@@ -38,6 +40,12 @@ const styles = () =>
   gulp
     .src(routes.scss.src)
     .pipe(sass().on('error', sass.logError))
+    .pipe(
+      autoPrefixer({
+        browsers: ['last 2 versions'],
+      })
+    )
+    .pipe(miniCSS())
     .pipe(gulp.dest(routes.scss.dest));
 
 const watch = () => {
